@@ -187,7 +187,7 @@ export default function Portfolio() {
           <div
             className="absolute inset-0 opacity-40"
             style={{
-              backgroundImage: 'url("/spm-logo.svg")',
+              backgroundImage: 'url("")',
               backgroundSize: "cover",
               backgroundPosition: "center",
               transform: `translateY(${scrollY * 0.5}px)`,
@@ -199,7 +199,7 @@ export default function Portfolio() {
               className={`text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent ${
                 theme === "dark"
                   ? "bg-gradient-to-r from-zinc-100 to-zinc-200"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600"
+                  : "bg-gradient-to-r from-blue-500 to-blue-700"
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -215,7 +215,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Criando presenças online poderosas para instituições
+              Criando presenças online poderosas para você e sua empresa.
             </motion.p>
             <motion.button
               onClick={() => scrollToSection("contact")}
@@ -381,17 +381,22 @@ export default function Portfolio() {
               </div>
               <div className="md:w-1/2 md:pl-8">
                 <p className="mb-4">
-                  A SPM é especializada em criar sites institucionais que servem
-                  como plataformas online poderosas para empresas e
-                  organizações. Nosso objetivo é fornecer uma presença digital
-                  sólida que reforce a marca, aumente a visibilidade online e
-                  transmita confiabilidade e profissionalismo.
+                  A SPM é uma empresa especializada na criação de soluções
+                  digitais completas, que incluem tanto o desenvolvimento de
+                  sites institucionais impactantes quanto de aplicativos
+                  prestadores de serviços. Nosso objetivo é ajudar empresas e
+                  organizações a consolidarem sua presença digital com
+                  ferramentas modernas, fáceis de usar e totalmente
+                  personalizadas.
                 </p>
                 <p>
-                  Oferecemos serviços completos, desde o desenvolvimento de
-                  layout personalizado até a integração com redes sociais e
-                  otimização para SEO, garantindo que nossos clientes tenham uma
-                  presença online eficaz e impactante.
+                  Oferecemos um conjunto completo de serviços que abrange desde
+                  o design responsivo e otimização para SEO até a integração de
+                  sistemas de gerenciamento de conteúdo e segurança de ponta.
+                  Além disso, nossa expertise em desenvolvimento de aplicativos
+                  garante que as instituições possam oferecer experiências
+                  eficientes e intuitivas aos seus usuários, tanto na web quanto
+                  em dispositivos móveis.
                 </p>
               </div>
             </div>
@@ -402,7 +407,7 @@ export default function Portfolio() {
               <div className="flex flex-col md:flex-row justify-center items-start md:space-x-8">
                 <div className="mb-8 md:mb-0 text-center w-full md:w-1/2">
                   <Image
-                    src="/pedromarinho.jfif"
+                    src="https://github.com/pedrohmarinho.png"
                     alt="Membro da equipe 1"
                     width={200}
                     height={200}
@@ -415,20 +420,29 @@ export default function Portfolio() {
                     Breve descrição sobre o membro 1 e sua função na equipe.
                   </p>
                   <div className="flex justify-center space-x-4">
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://www.instagram.com/pedrohomarinho/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Instagram size={24} />
                     </a>
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://www.linkedin.com/in/pedro-marinho-9b6915204/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Linkedin size={24} />
                     </a>
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://github.com/pedrohmarinho"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Github size={24} />
                     </a>
                   </div>
                 </div>
                 <div className="text-center w-full md:w-1/2">
                   <Image
-                    src="/luizfelipe.jfif"
+                    src="https://github.com/luizfelipemacedo.png"
                     alt="Membro da equipe 2"
                     width={200}
                     height={200}
@@ -441,13 +455,57 @@ export default function Portfolio() {
                     Breve descrição sobre o membro 2 e sua função na equipe.
                   </p>
                   <div className="flex justify-center space-x-4">
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://www.instagram.com/luizfelipemacedocruz/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Instagram size={24} />
                     </a>
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://www.linkedin.com/in/luiz-felipe-macedo-cruz-198b6824a/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Linkedin size={24} />
                     </a>
-                    <a href="#" className="text-blue-500 hover:text-blue-600">
+                    <a
+                      href="https://github.com/luizfelipemacedo"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      <Github size={24} />
+                    </a>
+                  </div>
+                </div>
+                <div className="text-center w-full md:w-1/2">
+                  <Image
+                    src="https://github.com/gustavopradobr.png"
+                    alt="Membro da equipe 2"
+                    width={200}
+                    height={200}
+                    className="rounded-full mb-4 mx-auto"
+                  />
+                  <h4 className="text-xl font-semibold">
+                    Gustavo Soares Prado
+                  </h4>
+                  <p className="text-sm mt-2 mb-4">
+                    Breve descrição sobre o membro 3 e sua função na equipe.
+                  </p>
+                  <div className="flex justify-center space-x-4">
+                    <a
+                      href="https://www.instagram.com/gustavo.prado.beats/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      <Instagram size={24} />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/gustavo-prado/"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      <Linkedin size={24} />
+                    </a>
+                    <a
+                      href="https://github.com/gustavopradobr"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
                       <Github size={24} />
                     </a>
                   </div>
