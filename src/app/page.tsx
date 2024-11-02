@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Space_Grotesk } from "next/font/google";
+import Link from "next/link";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function Portfolio() {
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
@@ -50,7 +52,42 @@ export default function Portfolio() {
     } else {
       setTheme("light");
     }
+    setIsMounted(true);
   }, []);
+
+  const [nameForm, setNameForm] = useState("");
+  const [emailForm, setEmailForm] = useState("");
+  const [messageForm, setMessageForm] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ nameForm, emailForm, messageForm }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao enviar o formulário");
+      }
+
+      // Limpar o formulário após o envio bem-sucedido
+      setNameForm("");
+      setEmailForm("");
+      setMessageForm("");
+
+      alert("Mensagem enviada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao enviar o formulário:", error);
+      alert(
+        "Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente."
+      );
+    }
+  };
 
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
@@ -78,6 +115,10 @@ export default function Portfolio() {
 
   const ThemeIcon = theme === "light" ? Sun : Moon;
 
+  if (!isMounted) {
+    return null; // or a loading spinner
+  }
+
   return (
     <div
       className={`${spaceGrotesk.className} min-h-screen ${
@@ -95,15 +136,20 @@ export default function Portfolio() {
       >
         <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image
-              src="/spm-logo.svg"
-              alt="Logo SPM"
-              width={150}
-              height={80}
-              className={`${
-                theme === "dark" ? "filter invert" : ""
-              } transition-all duration-300`}
-            />
+            {theme === "dark" ? (
+              <svg width="150" height="80" viewBox="0 0 150 80">
+                <image
+                  href="/spm-logo.svg"
+                  width="150"
+                  height="80"
+                  className="filter invert"
+                />
+              </svg>
+            ) : (
+              <svg width="150" height="80" viewBox="0 0 150 80">
+                <image href="/spm-logo.svg" width="150" height="80" />
+              </svg>
+            )}
           </div>
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
@@ -196,7 +242,7 @@ export default function Portfolio() {
           />
           <div className="text-center z-10">
             <motion.h1
-              className={`text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent ${
+              className={`text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent ${
                 theme === "dark"
                   ? "bg-gradient-to-r from-zinc-100 to-zinc-200"
                   : "bg-gradient-to-r from-blue-500 to-blue-700"
@@ -205,7 +251,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              Desenvolvedor de Sites Institucionais
+              Transformando Ideias em Soluções Digitais
             </motion.h1>
             <motion.p
               className={`text-xl md:text-2xl mb-8 ${
@@ -215,7 +261,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Criando presenças online poderosas para você e sua empresa.
+              Criando presenças online poderosas para impulsionar o seu negócio.
             </motion.p>
             <motion.button
               onClick={() => scrollToSection("contact")}
@@ -316,41 +362,46 @@ export default function Portfolio() {
             <h2 className="text-3xl font-bold mb-8 text-center">
               Nossos Projetos
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((item) => (
-                <motion.div
-                  key={item}
-                  className={`${
-                    theme === "dark" ? "bg-gray-900" : "bg-gray-100"
-                  } rounded-lg overflow-hidden`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
+            <motion.div
+              className={`${
+                theme === "dark" ? "bg-gray-900" : "bg-gray-100"
+              } rounded-lg overflow-hidden shadow-lg max-w-2xl mx-auto`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5 }}
+            >
+              <div className="p-8 flex flex-col items-center">
+                <Link
+                  href="https://vision-care-azure.vercel.app/"
+                  className="mb-6 transition-transform hover:scale-105"
                 >
                   <Image
-                    width={400}
-                    height={300}
-                    src={`/placeholder.svg?height=300&width=400&text=Projeto ${item}`}
-                    alt={`Projeto ${item}`}
-                    className="w-full h-48 object-cover"
+                    width={200}
+                    height={200}
+                    src="/visioncare_spm_logo.png"
+                    alt="VisionCare Logo"
+                    className="w-48 h-48 object-contain"
                   />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">
-                      Projeto {item}
-                    </h3>
-                    <p
-                      className={`text-sm ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      Uma breve descrição do projeto e seu impacto.
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                </Link>
+                <h3 className="text-2xl font-semibold mb-4 text-center">
+                  VisionCare
+                </h3>
+                <p
+                  className={`text-center ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  VisionCare é uma solução inovadora para gerenciamento de
+                  óticas. Nossa plataforma oferece ferramentas intuitivas para
+                  controle de estoque, gerenciamento de pedidos, e
+                  acompanhamento de serviços, permitindo que profissionais do
+                  ramo óptico foquem no que realmente importa: a saúde visual de
+                  seus clientes.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -361,7 +412,9 @@ export default function Portfolio() {
           }`}
         >
           <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold mb-8 text-center">Sobre a SPM</h2>
+            <h2 className="text-3xl font-bold  mb-8 text-center">
+              Sobre a SPM
+            </h2>
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="md:w-1/2 mb-8 md:mb-0">
                 <div className="bg-black p-8 rounded-lg shadow-lg flex justify-center items-center overflow-hidden">
@@ -369,13 +422,14 @@ export default function Portfolio() {
                     whileHover={{ scale: 1.2 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <Image
-                      src="/spm-logo.svg"
-                      alt="Logo SPM"
-                      width={300}
-                      height={300}
-                      className="filter invert"
-                    />
+                    <svg width="300" height="300" viewBox="0 0 300 300">
+                      <image
+                        href="/spm-logo.svg"
+                        width="300"
+                        height="300"
+                        className="filter invert"
+                      />
+                    </svg>
                   </motion.div>
                 </div>
               </div>
@@ -405,7 +459,7 @@ export default function Portfolio() {
                 Nossa Equipe
               </h3>
               <div className="flex flex-col md:flex-row justify-center items-start md:space-x-8">
-                <div className="mb-8 md:mb-0 text-center w-full md:w-1/2">
+                <div className="mb-8 md:mb-0 text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/pedrohmarinho.png"
                     alt="Membro da equipe 1"
@@ -417,7 +471,12 @@ export default function Portfolio() {
                     Pedro Henrique Marinho de Oliveira
                   </h4>
                   <p className="text-sm mt-2 mb-4">
-                    Breve descrição sobre o membro 1 e sua função na equipe.
+                    Fundador da SPM, Pedro Marinho é um desenvolvedor full stack
+                    com experiência na criação de soluções tecnológicas. Com a
+                    equipe da SPM, desenvolveu o SPM - Vision Care, uma
+                    aplicação de gestão eficiente para óticas que tem por
+                    objetivo otimizar processos e melhorar a eficiência
+                    operacional do setor.
                   </p>
                   <div className="flex justify-center space-x-4">
                     <a
@@ -440,7 +499,7 @@ export default function Portfolio() {
                     </a>
                   </div>
                 </div>
-                <div className="text-center w-full md:w-1/2">
+                <div className="text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/luizfelipemacedo.png"
                     alt="Membro da equipe 2"
@@ -452,7 +511,16 @@ export default function Portfolio() {
                     Luiz Felipe Macedo Cruz
                   </h4>
                   <p className="text-sm mt-2 mb-4">
-                    Breve descrição sobre o membro 2 e sua função na equipe.
+                    Cofundador da SPM, Luiz Felipe é um desenvolvedor de
+                    software com uma trajetória sólida, focado em criar soluções
+                    inovadoras. Liderou o desenvolvimento de um sistema de
+                    backoffice integrado a um aplicativo de vendas homologado
+                    pela Heineken e implementou uma esteira automatizada que
+                    reduziu os custos com cloud em 75%. Ele também desenvolveu
+                    uma solução multi-tenancy para gestão eficiente de bancos de
+                    dados e aprimorou módulos de gestão de produtos e
+                    precificação, aumentando a eficiência dos processos
+                    administrativos.
                   </p>
                   <div className="flex justify-center space-x-4">
                     <a
@@ -475,10 +543,10 @@ export default function Portfolio() {
                     </a>
                   </div>
                 </div>
-                <div className="text-center w-full md:w-1/2">
+                <div className="text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/gustavopradobr.png"
-                    alt="Membro da equipe 2"
+                    alt="Membro da equipe 3"
                     width={200}
                     height={200}
                     className="rounded-full mb-4 mx-auto"
@@ -487,7 +555,14 @@ export default function Portfolio() {
                     Gustavo Soares Prado
                   </h4>
                   <p className="text-sm mt-2 mb-4">
-                    Breve descrição sobre o membro 3 e sua função na equipe.
+                    Fundador da Prado Studios, Gustavo Prado é um desenvolvedor
+                    de jogos com ampla experiência em Unity e C#, atuando
+                    profissionalmente há mais de um ano e com mais de cinco anos
+                    de dedicação a projetos pessoais. Entre seus principais
+                    projetos, está o reconhecimento do primeiro jogo publicado,
+                    Toon Chase, como finalista na categoria &quot;Melhor Jogo
+                    Mobile&quot; no BIG Festival 2022, o maior evento de games
+                    independentes da América Latina.
                   </p>
                   <div className="flex justify-center space-x-4">
                     <a
@@ -524,7 +599,7 @@ export default function Portfolio() {
               Entre em Contato
             </h2>
             <div className="max-w-2xl mx-auto">
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="name"
@@ -539,6 +614,8 @@ export default function Portfolio() {
                     className={`w-full px-3 py-2 ${
                       theme === "dark" ? "bg-gray-800" : "bg-gray-100"
                     } rounded-md`}
+                    value={nameForm}
+                    onChange={(e) => setNameForm(e.target.value)}
                     required
                   />
                 </div>
@@ -556,6 +633,8 @@ export default function Portfolio() {
                     className={`w-full px-3 py-2 ${
                       theme === "dark" ? "bg-gray-800" : "bg-gray-100"
                     } rounded-md`}
+                    value={emailForm}
+                    onChange={(e) => setEmailForm(e.target.value)}
                     required
                   />
                 </div>
@@ -573,6 +652,8 @@ export default function Portfolio() {
                     className={`w-full px-3 py-2 ${
                       theme === "dark" ? "bg-gray-800" : "bg-gray-100"
                     } rounded-md`}
+                    value={messageForm}
+                    onChange={(e) => setMessageForm(e.target.value)}
                     required
                   ></textarea>
                 </div>
