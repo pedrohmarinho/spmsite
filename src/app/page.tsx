@@ -21,6 +21,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Space_Grotesk } from "next/font/google";
+import { Resend } from "resend";
+import { EmailTemplate } from "@/components/email-template";
+import Link from "next/link";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -28,6 +31,7 @@ export default function Portfolio() {
   const [scrollY, setScrollY] = useState(0);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { scrollYProgress } = useScroll();
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export default function Portfolio() {
     } else {
       setTheme("light");
     }
+    setIsMounted(true);
   }, []);
 
   const toggleTheme = () => {
@@ -78,6 +83,10 @@ export default function Portfolio() {
 
   const ThemeIcon = theme === "light" ? Sun : Moon;
 
+  if (!isMounted) {
+    return null; // or a loading spinner
+  }
+
   return (
     <div
       className={`${spaceGrotesk.className} min-h-screen ${
@@ -95,15 +104,20 @@ export default function Portfolio() {
       >
         <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center">
-            <Image
-              src="/spm-logo.svg"
-              alt="Logo SPM"
-              width={150}
-              height={80}
-              className={`${
-                theme === "dark" ? "filter invert" : ""
-              } transition-all duration-300`}
-            />
+            {theme === "dark" ? (
+              <svg width="150" height="80" viewBox="0 0 150 80">
+                <image
+                  href="/spm-logo.svg"
+                  width="150"
+                  height="80"
+                  className="filter invert"
+                />
+              </svg>
+            ) : (
+              <svg width="150" height="80" viewBox="0 0 150 80">
+                <image href="/spm-logo.svg" width="150" height="80" />
+              </svg>
+            )}
           </div>
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
@@ -196,7 +210,7 @@ export default function Portfolio() {
           />
           <div className="text-center z-10">
             <motion.h1
-              className={`text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent ${
+              className={`text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent ${
                 theme === "dark"
                   ? "bg-gradient-to-r from-zinc-100 to-zinc-200"
                   : "bg-gradient-to-r from-blue-500 to-blue-700"
@@ -205,7 +219,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              Desenvolvedor de Sites Institucionais
+              Transformando Ideias em Soluções Digitais
             </motion.h1>
             <motion.p
               className={`text-xl md:text-2xl mb-8 ${
@@ -215,7 +229,7 @@ export default function Portfolio() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Criando presenças online poderosas para você e sua empresa.
+              Criando presenças online poderosas para impulsionar o seu negócio.
             </motion.p>
             <motion.button
               onClick={() => scrollToSection("contact")}
@@ -316,41 +330,46 @@ export default function Portfolio() {
             <h2 className="text-3xl font-bold mb-8 text-center">
               Nossos Projetos
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((item) => (
-                <motion.div
-                  key={item}
-                  className={`${
-                    theme === "dark" ? "bg-gray-900" : "bg-gray-100"
-                  } rounded-lg overflow-hidden`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  whileHover={{ y: -5 }}
+            <motion.div
+              className={`${
+                theme === "dark" ? "bg-gray-900" : "bg-gray-100"
+              } rounded-lg overflow-hidden shadow-lg max-w-2xl mx-auto`}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              whileHover={{ y: -5 }}
+            >
+              <div className="p-8 flex flex-col items-center">
+                <Link
+                  href="https://vision-care-azure.vercel.app/"
+                  className="mb-6 transition-transform hover:scale-105"
                 >
                   <Image
-                    width={400}
-                    height={300}
-                    src={`/placeholder.svg?height=300&width=400&text=Projeto ${item}`}
-                    alt={`Projeto ${item}`}
-                    className="w-full h-48 object-cover"
+                    width={200}
+                    height={200}
+                    src="/visioncare_spm_logo.png"
+                    alt="VisionCare Logo"
+                    className="w-48 h-48 object-contain"
                   />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">
-                      Projeto {item}
-                    </h3>
-                    <p
-                      className={`text-sm ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-600"
-                      }`}
-                    >
-                      Uma breve descrição do projeto e seu impacto.
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                </Link>
+                <h3 className="text-2xl font-semibold mb-4 text-center">
+                  VisionCare
+                </h3>
+                <p
+                  className={`text-center ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  VisionCare é uma solução inovadora para gerenciamento de
+                  óticas e laboratórios oftalmológicos. Nossa plataforma oferece
+                  ferramentas intuitivas para controle de estoque, gerenciamento
+                  de pedidos, e acompanhamento de serviços, permitindo que
+                  profissionais da área oftalmológica foquem no que realmente
+                  importa: a saúde visual de seus pacientes.
+                </p>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -361,7 +380,9 @@ export default function Portfolio() {
           }`}
         >
           <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold mb-8 text-center">Sobre a SPM</h2>
+            <h2 className="text-3xl font-bold  mb-8 text-center">
+              Sobre a SPM
+            </h2>
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="md:w-1/2 mb-8 md:mb-0">
                 <div className="bg-black p-8 rounded-lg shadow-lg flex justify-center items-center overflow-hidden">
@@ -369,13 +390,14 @@ export default function Portfolio() {
                     whileHover={{ scale: 1.2 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
-                    <Image
-                      src="/spm-logo.svg"
-                      alt="Logo SPM"
-                      width={300}
-                      height={300}
-                      className="filter invert"
-                    />
+                    <svg width="300" height="300" viewBox="0 0 300 300">
+                      <image
+                        href="/spm-logo.svg"
+                        width="300"
+                        height="300"
+                        className="filter invert"
+                      />
+                    </svg>
                   </motion.div>
                 </div>
               </div>
@@ -405,7 +427,7 @@ export default function Portfolio() {
                 Nossa Equipe
               </h3>
               <div className="flex flex-col md:flex-row justify-center items-start md:space-x-8">
-                <div className="mb-8 md:mb-0 text-center w-full md:w-1/2">
+                <div className="mb-8 md:mb-0 text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/pedrohmarinho.png"
                     alt="Membro da equipe 1"
@@ -440,7 +462,7 @@ export default function Portfolio() {
                     </a>
                   </div>
                 </div>
-                <div className="text-center w-full md:w-1/2">
+                <div className="text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/luizfelipemacedo.png"
                     alt="Membro da equipe 2"
@@ -475,10 +497,10 @@ export default function Portfolio() {
                     </a>
                   </div>
                 </div>
-                <div className="text-center w-full md:w-1/2">
+                <div className="text-center w-full md:w-1/3">
                   <Image
                     src="https://github.com/gustavopradobr.png"
-                    alt="Membro da equipe 2"
+                    alt="Membro da equipe 3"
                     width={200}
                     height={200}
                     className="rounded-full mb-4 mx-auto"
@@ -515,81 +537,83 @@ export default function Portfolio() {
           </div>
         </section>
 
-        <section
-          id="contact"
-          className={`py-16 ${theme === "dark" ? "bg-black" : "bg-white"}`}
-        >
-          <div className="container mx-auto px-6">
-            <h2 className="text-3xl font-bold mb-8 text-center">
-              Entre em Contato
-            </h2>
-            <div className="max-w-2xl mx-auto">
-              <form className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    Nome
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    className={`w-full px-3 py-2 ${
-                      theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-                    } rounded-md`}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    className={`w-full px-3 py-2 ${
-                      theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-                    } rounded-md`}
-                    required
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="message"
-                    className="block text-sm font-medium mb-1"
-                  >
-                    Mensagem
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    className={`w-full px-3 py-2 ${
-                      theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-                    } rounded-md`}
-                    required
-                  ></textarea>
-                </div>
-                <div>
-                  <motion.button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Enviar Mensagem
-                  </motion.button>
-                </div>
-              </form>
+        <form>
+          <section
+            id="contact"
+            className={`py-16 ${theme === "dark" ? "bg-black" : "bg-white"}`}
+          >
+            <div className="container mx-auto px-6">
+              <h2 className="text-3xl font-bold mb-8 text-center">
+                Entre em Contato
+              </h2>
+              <div className="max-w-2xl mx-auto">
+                <form className="space-y-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Nome
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      className={`w-full px-3 py-2 ${
+                        theme === "dark" ? "bg-gray-800" : "bg-gray-100"
+                      } rounded-md`}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      className={`w-full px-3 py-2 ${
+                        theme === "dark" ? "bg-gray-800" : "bg-gray-100"
+                      } rounded-md`}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium mb-1"
+                    >
+                      Mensagem
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      rows={4}
+                      className={`w-full px-3 py-2 ${
+                        theme === "dark" ? "bg-gray-800" : "bg-gray-100"
+                      } rounded-md`}
+                      required
+                    ></textarea>
+                  </div>
+                  <div>
+                    <motion.button
+                      type="submit"
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Enviar Mensagem
+                    </motion.button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </form>
       </main>
 
       <footer
