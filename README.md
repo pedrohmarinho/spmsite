@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🪐SPM - Soluções Digitais Inovadoras 🚀
 
-## Getting Started
+A SPM é uma startup especializada em criar soluções digitais completas, desde sites institucionais impactantes até aplicativos de serviços inovadores. Nossa missão é ajudar empresas e organizações a estabelecerem uma presença digital sólida com ferramentas modernas, intuitivas e personalizadas.
 
-First, run the development server:
+## Nossos Serviços 💼
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🖥️ Desenvolvimento Web Personalizado
+- 📱 Design Responsivo
+- 🔍 Otimização para SEO
+- 📊 Análise de Dados
+- 🛡️ Segurança e Manutenção
+- 📝 Sistemas de Gerenciamento de Conteúdo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Nossa Equipe 👥
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Estamos sempre prontos para discutir como podemos ajudar a impulsionar o seu negócio no mundo digital. Entre em contato conosco através do nosso site ou redes sociais!
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<table align="center">
+  <tr>
+    <td align="center">
+      <a href="https://github.com/pedrohmarinho">
+        <img src="https://github.com/pedrohmarinho.png" width="100px;" alt="Foto do Pedro Marinho"/><br>
+        <sub>
+          <b>Pedro Marinho</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/luizfelipemacedo">
+        <img src="https://github.com/luizfelipemacedo.png" width="100px;" alt="Foto do Luiz Felipe"/><br>
+        <sub>
+          <b>Luiz Felipe Macedo</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/gustavopradobr">
+        <img src="https://github.com/gustavopradobr.png" width="100px;" alt="Foto do Gustavo Prado"/><br>
+        <sub>
+          <b>Gustavo Prado</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+<div align="center">
+  © 2024 SPM. Todos os direitos reservados.
+</div>
