@@ -18,10 +18,20 @@ import {
   Globe,
   Search,
   Shield,
+  Loader2,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Space_Grotesk } from "next/font/google";
 import Link from "next/link";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
 
@@ -31,6 +41,11 @@ export default function Portfolio() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const { scrollYProgress } = useScroll();
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -55,12 +70,28 @@ export default function Portfolio() {
     setIsMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isSubmitting) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isSubmitting]);
+
   const [nameForm, setNameForm] = useState("");
   const [emailForm, setEmailForm] = useState("");
   const [messageForm, setMessageForm] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/send", {
@@ -75,17 +106,19 @@ export default function Portfolio() {
         throw new Error("Falha ao enviar o formulário");
       }
 
-      // Limpar o formulário após o envio bem-sucedido
+      // Clear the form after successful submission
       setNameForm("");
       setEmailForm("");
       setMessageForm("");
-
-      alert("Mensagem enviada com sucesso!");
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error("Erro ao enviar o formulário:", error);
-      alert(
+      setErrorMessage(
         "Ocorreu um erro ao enviar a mensagem. Por favor, tente novamente."
       );
+      setIsErrorModalOpen(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,8 +156,35 @@ export default function Portfolio() {
     <div
       className={`${spaceGrotesk.className} min-h-screen ${
         theme === "dark" ? "bg-black text-white" : "bg-white text-black"
-      } transition-colors duration-300`}
+      } transition-colors duration-300 ${
+        isSubmitting ? "pointer-events-none" : ""
+      }`}
+      aria-busy={isSubmitting}
     >
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div
+            className={`${
+              theme === "dark"
+                ? "bg-gray-800 text-white"
+                : "bg-white text-gray-800"
+            } p-8 rounded-xl shadow-2xl text-center max-w-md w-full mx-4`}
+          >
+            <div
+              className={`${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-100"
+              } rounded-full p-4 mb-6 inline-block`}
+            >
+              <Loader2 className="animate-spin h-8 w-8 mx-auto text-blue-500" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Enviando mensagem...</h3>
+            <p className="text-sm opacity-80">
+              Por favor, aguarde enquanto processamos sua solicitação.
+            </p>
+          </div>
+        </div>
+      )}
+
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-blue-600 z-50"
         style={{ scaleX: scrollYProgress }}
@@ -617,6 +677,7 @@ export default function Portfolio() {
                     value={nameForm}
                     onChange={(e) => setNameForm(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -636,6 +697,7 @@ export default function Portfolio() {
                     value={emailForm}
                     onChange={(e) => setEmailForm(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   />
                 </div>
                 <div>
@@ -655,16 +717,25 @@ export default function Portfolio() {
                     value={messageForm}
                     onChange={(e) => setMessageForm(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   ></textarea>
                 </div>
                 <div>
                   <motion.button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition-colors flex items-center justify-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
+                    disabled={isSubmitting}
                   >
-                    Enviar Mensagem
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      "Enviar Mensagem"
+                    )}
                   </motion.button>
                 </div>
               </form>
@@ -712,6 +783,35 @@ export default function Portfolio() {
           </div>
         </div>
       </footer>
+
+      <Dialog open={isSuccessModalOpen} onOpenChange={setIsSuccessModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-green-500">
+              <CheckCircle className="mr-2" />
+              Sucesso
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription>
+            Sua mensagem foi enviada com sucesso! Entraremos em contato em
+            breve.
+          </DialogDescription>
+          <Button onClick={() => setIsSuccessModalOpen(false)}>Fechar</Button>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isErrorModalOpen} onOpenChange={setIsErrorModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center text-red-500">
+              <XCircle className="mr-2" />
+              Erro
+            </DialogTitle>
+          </DialogHeader>
+          <DialogDescription>{errorMessage}</DialogDescription>
+          <Button onClick={() => setIsErrorModalOpen(false)}>Fechar</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
