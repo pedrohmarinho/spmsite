@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
     const { error } = await resend.emails.send({
       from: 'SPM Contact Form <onboarding@resend.dev>',
-      to: ['pedromarinho262@gmail.com'],
+      to: [process.env.EMAIL_TO_SEND as string],
       subject: 'Nova mensagem do formulário de contato',
       react: EmailTemplate({ name: nameForm, email: emailForm, message: messageForm }),
     });
